@@ -4,19 +4,28 @@ var gtfs = require('gtfs');
 var router = express.Router();
 
 router.route('/stops')
-	.get(function(req,res){
-		var agencies;
-		gtfs.agencies(function(err, agenciesarray) {
-			agencies = err;
+	.get(function(req, res) {
+		var agency_key;
+		gtfs.agencies(function(err, agencies) {
+			if (err) {
+				console.log(err);
+			} else {
+				agency_key = agencies[0].agency_key;
+				gtfs.getStops(agency_key, function(err, stops) {
+					if (err) {
+						console.log(err);
+					} else {
+						res.send(stops);
+					}
+				});
+
+			}
 		});
-
-
-		res.send(JSON.stringify(agencies) + 'test string');
 	});
 
 router.route('/stops/:stop')
 	//returns a particular stop
-	.get(function(req,res){
+	.get(function(req, res) {
 		var stop = req.params.stop;
 	});
 module.exports = router;
