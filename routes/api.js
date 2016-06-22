@@ -28,7 +28,6 @@ router.route('/stops/:stop')
 	.get(function(req, res) {
 		var stop = req.params.stop;
 		var agency_key;
-		console.log(stop);
 		gtfs.agencies(function(err, agencies) {
 			if (err) {
 				console.log(err);
